@@ -19,10 +19,10 @@ class Robot:
         self.connected = False
 
     def fist(self):
-        self.sock.send(b'robot:motors:L.Finger.Index:posset:-55\n')
-        self.sock.send(b'robot:motors:L.Finger.Middle:posset:-55\n')
-        self.sock.send(b'robot:motors:L.Finger.Ring:posset:-55\n')
-        self.sock.send(b'robot:motors:L.Finger.Little:posset:-55\n')
+        self.sock.send(b'robot:motors:L.Finger.Index:posset:-45\n')
+        self.sock.send(b'robot:motors:L.Finger.Middle:posset:-45\n')
+        self.sock.send(b'robot:motors:L.Finger.Ring:posset:-45\n')
+        self.sock.send(b'robot:motors:L.Finger.Little:posset:-45\n')
         self.sock.send(b'robot:motors:L.Finger.Thumb:posset:-55\n')
 
     def antifist(self):
