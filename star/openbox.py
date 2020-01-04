@@ -69,4 +69,3 @@ fedor = Robot('192.168.0.108')
 
 fedor.open_box()
 fedor.disconnect()
-
