@@ -24,6 +24,17 @@ class Robot:
         self.sock.connect((self.host, 11099))
         self.connected = True
 
+    def request(self, req):
+        self.sock.send(req.encode())
+        time.sleep(0.01)
+        data = self.sock.recv(1024)
+        if b'\xf0' in data:
+            return None
+        elif b'\xf1' in data:
+            return data.replace(b'\xf1', b'').replace(b'\r\n', b'').decode()
+        else:
+            raise BaseException('Request error: ' + data.decode())
+
     def forward(self, t):
         while t > 0:
             self.sock.send(b'robot:motors:R.WheelF:velset:100\n')
@@ -46,6 +57,18 @@ class Robot:
         time.sleep(3)
         self.client.close()
 
+    def get_sensor_data(self, sensor):
+        head = self.request('robot:sensors:{}:list\n'.format(sensor))
+        head = head.split(';')
+
+        data = self.request('robot:sensors:{}\n'.format(sensor))
+        data = data.split(';')
+
+        if len(head) != len(data):
+            raise BaseException('Length is not equal')
+
+        return dict(zip(head, data))
+
 
 fedor = Robot('192.168.0.108')
 fedor.reset()
@@ -55,4 +78,8 @@ fedor.reset()
 
 fedor.connect_base()
 fedor.stop()
+fedor.disconnect()
+
+fedor.connect_body()
+print(fedor.get_sensor_data('imu'))
 fedor.disconnect()
