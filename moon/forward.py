@@ -12,7 +12,7 @@ class Robot:
     def __init__(self, host):
         self.host = host
 
-    def connect(self):
+    def connect_body(self):
         self.sock.connect((self.host, 10099))
         self.connected = True
 
@@ -20,13 +20,9 @@ class Robot:
         self.sock.close()
         self.connected = False
 
-    def connect1(self):
+    def connect_base(self):
         self.sock.connect((self.host, 11099))
         self.connected = True
-
-    def disconnect1(self):
-        self.sock.close()
-        self.connected = False
 
     def forward(self, t):
         while t > 0:
@@ -57,6 +53,6 @@ fedor.reset()
 #fedor.connect1()
 #fedor.disconnect1()
 
-fedor.connect1()
+fedor.connect_base()
 fedor.stop()
-fedor.disconnect1()
+fedor.disconnect()
