@@ -13,6 +13,7 @@ class Robot:
         self.host = host
 
     def connect_body(self):
+        self.sock = socket.socket()
         self.sock.connect((self.host, 10099))
         self.connected = True
 
@@ -21,6 +22,7 @@ class Robot:
         self.connected = False
 
     def connect_base(self):
+        self.sock = socket.socket()
         self.sock.connect((self.host, 11099))
         self.connected = True
 
