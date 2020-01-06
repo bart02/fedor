@@ -34,6 +34,8 @@ class Connection:
                     return None
                 elif b'\xf1' in data:
                     return data.replace(b'\xf1', b'').replace(b'\r\n', b'').decode()
+                elif data == b'':
+                    self.reconnect()
                 else:
                     raise BaseException(b'Request error: ' + data)
             except (ConnectionResetError, ConnectionAbortedError):
@@ -57,6 +59,11 @@ class Platform(Connection):
 
     def stop(self):
         self.go(speed=0, dir=0)
+
+    def go_time(self, t, speed=None, dir=None):
+        self.go(speed, dir)
+        sleep(t)
+        self.stop()
 
 
 class Body(Connection):
