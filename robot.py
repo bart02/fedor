@@ -52,7 +52,7 @@ class Platform(Connection):
             self.request('robot:motors:R.WheelF:velset:' + str(speed))
             self.request('robot:motors:R.WheelB:velset:' + str(speed))
             self.request('robot:motors:L.WheelF:velset:' + str(speed))
-            self.request('robot:motors:R.WheelB:velset:' + str(speed))
+            self.request('robot:motors:L.WheelB:velset:' + str(speed))
         if dir is not None:
             self.request('robot:motors:R.DriveWheelF:posset:' + str(dir))
             self.request('robot:motors:L.DriveWheelF:posset:' + str(dir))
