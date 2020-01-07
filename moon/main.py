@@ -1,11 +1,21 @@
 from robot import *
 
-Scene = Scene('192.168.1.135')
-Scene.reset()
+nikita = '192.168.0.108'
+artem = '192.168.1.135'
 
-Body = Body('192.168.1.135')
+fedor = Robot(nikita)
+plat = Robot(nikita, platform=True)
 
-Platform = Platform('192.168.1.135')
+fedor.reset()
+plat.platform.go_time(25, 100)
+plat.platform.go_time(11, 100, 25)
+plat.platform.go_time(9, 100)
 
-Platform.go_time(25, 100)
-Platform.go_time(3, 100, 25)
+fedor.body.click_button()
+fedor.body.index()
+
+# workn't
+plat.platform.go_time(10, -100, -25)
+sleep(1)
+plat.platform.go_time(15, 100)
+plat.platform.go_time(10, 100, -25)
