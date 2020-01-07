@@ -144,6 +144,18 @@ class Body(Connection):
         self.request('robot:motors:R.ShoulderF:posset:-60')
         sleep(1)
 
+    def click_button(self):
+        self.fist()
+        sleep(1)
+        self.request('robot:motors:L.ShoulderS:posset:80')
+        self.request('robot:motors:L.ElbowR:posset:15')
+        sleep(1)
+        self.request('robot:motors:TorsoR:posset:-65')
+        self.request('robot:motors:L.Elbow:posset:-70')
+        self.request('robot:motors:L.Elbow:posset:-20')
+        sleep(2)
+
+
 
 class Scene:
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
