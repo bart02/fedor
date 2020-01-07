@@ -34,6 +34,8 @@ class Connection:
                     return None
                 elif b'\xf1' in data:
                     return data.replace(b'\xf1', b'').replace(b'\r\n', b'').decode()
+                elif data == b'':
+                    self.reconnect()
                 else:
                     raise BaseException(b'Request error: ' + data)
             except (ConnectionResetError, ConnectionAbortedError):
@@ -50,13 +52,18 @@ class Platform(Connection):
             self.request('robot:motors:R.WheelF:velset:' + str(speed))
             self.request('robot:motors:R.WheelB:velset:' + str(speed))
             self.request('robot:motors:L.WheelF:velset:' + str(speed))
-            self.request('robot:motors:R.WheelB:velset:' + str(speed))
+            self.request('robot:motors:L.WheelB:velset:' + str(speed))
         if dir is not None:
             self.request('robot:motors:R.DriveWheelF:posset:' + str(dir))
             self.request('robot:motors:L.DriveWheelF:posset:' + str(dir))
 
     def stop(self):
         self.go(speed=0, dir=0)
+
+    def go_time(self, t, speed=None, dir=None):
+        self.go(speed, dir)
+        sleep(t)
+        self.stop()
 
 
 class Body(Connection):
@@ -136,6 +143,18 @@ class Body(Connection):
         self.request('robot:motors:TorsoR:posset:-60')
         self.request('robot:motors:R.ShoulderF:posset:-60')
         sleep(1)
+
+    def click_button(self):
+        self.fist()
+        sleep(1)
+        self.request('robot:motors:L.ShoulderS:posset:80')
+        self.request('robot:motors:L.ElbowR:posset:15')
+        sleep(1)
+        self.request('robot:motors:TorsoR:posset:-65')
+        self.request('robot:motors:L.Elbow:posset:-70')
+        self.request('robot:motors:L.Elbow:posset:-20')
+        sleep(2)
+
 
 
 class Scene:
