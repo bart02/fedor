@@ -1,5 +1,6 @@
 import socket
 from time import sleep
+from cv2 import VideoCapture
 
 
 class Connection:
@@ -71,6 +72,11 @@ class Body(Connection):
         self.host = host
         super().__init__(self.host, 10099)
         self.motors = self.get_all_motors_data()
+        self.cap = VideoCapture('http://{}:800/'.format(self.host))
+
+    def video_restart(self):
+        self.cap.release()
+        self.cap = VideoCapture('http://{}:800/'.format(self.host))
 
     def get_sensor_data(self, sensor):
         head = self.request('robot:sensors:{}:list'.format(sensor))
