@@ -58,6 +58,32 @@ class Platform(Connection):
             self.request('robot:motors:R.DriveWheelF:posset:' + str(dir))
             self.request('robot:motors:L.DriveWheelF:posset:' + str(dir))
 
+
+    def gograd(self, deg, pov=None):
+        plus = 0
+        lastpos = 0
+        d = 0
+        s = 0
+        while d < deg:
+            if deg - d < 100:
+                s = 40
+            else:
+                s = 100
+            self.go(s, pov)
+            pos = (float(self.request('robot:motors:R.WheelF:posget')[:-1]))
+            if pos < 0:
+                if lastpos > 0:
+                    plus += 180
+                posv = 180 + pos
+            else:
+                if lastpos < 0:
+                    plus += 180
+                posv = pos
+            lastpos = pos
+            d = posv + plus
+            print(d)
+        self.stop()
+
     def stop(self):
         self.go(speed=0, dir=0)
 
@@ -149,18 +175,6 @@ class Body(Connection):
         self.request('robot:motors:TorsoR:posset:-60')
         self.request('robot:motors:R.ShoulderF:posset:-60')
         sleep(1)
-
-    def click_button(self):
-        self.fist()
-        sleep(1)
-        self.request('robot:motors:L.ShoulderS:posset:80')
-        self.request('robot:motors:L.ElbowR:posset:15')
-        sleep(1)
-        self.request('robot:motors:TorsoR:posset:-65')
-        self.request('robot:motors:L.Elbow:posset:-70')
-        self.request('robot:motors:L.Elbow:posset:-20')
-        sleep(2)
-
 
 
 class Scene:
