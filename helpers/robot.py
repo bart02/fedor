@@ -58,17 +58,19 @@ class Platform(Connection):
             self.request('robot:motors:R.DriveWheelF:posset:' + str(dir))
             self.request('robot:motors:L.DriveWheelF:posset:' + str(dir))
 
-
-    def gograd(self, deg, pov=None):
+    def gograd(self, deg, pov=None, speed=None):  # Don't use! It wasn't tested and works very unstable.
         plus = 0
         lastpos = 0
         d = 0
         s = 0
         while d < deg:
-            if deg - d < 100:
+            if deg - d < 10:
                 s = 40
             else:
-                s = 100
+                if speed is not None:
+                    s = speed
+                else:
+                    s = 100
             self.go(s, pov)
             pos = (float(self.request('robot:motors:R.WheelF:posget')[:-1]))
             if pos < 0:
